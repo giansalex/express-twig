@@ -1,17 +1,18 @@
 var express = require('express');
+var homeRoutes = require('./home');
+var userRoutes = require('./users');
+
 var router = express.Router();
 
+/** GET /health-check - Check service health */
+router.get('/health-check', (req, res) =>
+  res.send('OK')
+);
+
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.use('/', homeRoutes);
 
-  res.render('index', { title: 'Express' });
-});
+// mount user routes at /auth
+router.use('/users', userRoutes);
 
-router.get('/hello/:name?', function(req, res, next) {
-  var name = req.params.name;
-  if (!name) {
-    name = 'Express';
-  }
-  res.render('index', { title: name });
-});
 module.exports = router;
