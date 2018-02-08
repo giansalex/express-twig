@@ -5,6 +5,6 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', homeCtrl.index);
-
 router.get('/hello/:name?', homeCtrl.hello);
+
 module.exports = router;

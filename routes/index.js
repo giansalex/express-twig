@@ -5,9 +5,9 @@ var userRoutes = require('./users');
 var router = express.Router();
 
 /** GET /health-check - Check service health */
-router.get('/health-check', (req, res) =>
-  res.send('OK')
-);
+router.get('/health-check', function (req, res) {
+    res.send('OK')
+});
 
 /* GET home page. */
 router.use('/', homeRoutes);
