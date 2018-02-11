@@ -1,4 +1,4 @@
-var connection = require('../data/db');
+var connection = require('../config/database');
 var db = require('../models/user.model');
 
 exports.index = function (req, res, next) {
