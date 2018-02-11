@@ -15,17 +15,11 @@ const User = sequelize.define('user', {
   password: {
     type: Sequelize.STRING
   }
-}, {
-  classMethods: {
-    generateHash : function(password) {
-      return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-    }
-  },
-  instanceMethods: {
-    validPassword: function(password) {
-      return bcrypt.compareSync(password, this.password);
-    }
-  }
 });
-
+User.generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+User.validPassword = function(password, currentPass) {
+  return bcrypt.compareSync(password, currentPass);
+};
 exports.User = User;

@@ -56,11 +56,10 @@ module.exports = function(passport) {
 
             // if there is no user with that email
             // create the user
-            var newUser            = new User();
-
-            // set the user's local credentials
-            newUser.email    = email;
-            newUser.password = newUser.generateHash(password);
+            var newUser = {
+              email: email,
+              password: User.generateHash(password)
+            };
 
             User.sync()
               .then(function(){
@@ -70,9 +69,11 @@ module.exports = function(passport) {
                     return done(null, savedUser);
                   })
                   .catch(function (err) {
-
+                    console.log(err);
                   });
-              });
+              }).catch(function (err) {
+               console.log(err);
+            });
           }
 
         });
@@ -96,13 +97,14 @@ module.exports = function(passport) {
           email: email
         }
       }).then(function (users) {
+
         // if no user is found, return the message
         if (users.count === 0)
           return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
 
         var user = users[0];
         // if the user is found but the password is wrong
-        if (!user.validPassword(password))
+        if (!User.validPassword(password, user.password))
           return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
         // all is well, return successful user
